@@ -9,6 +9,7 @@ from mininet.util import quietRun
 
 from minindn.apps.nfd import Nfd
 from minindn.apps.nlsr import Nlsr
+from minindn.apps.app_manager import AppManager
 #from minindn.apps.appmanager import AppManager
 
 def cleanUp():
@@ -22,20 +23,20 @@ def run_adhoc_experiment():
 
     net = MinindnAdhoc()
 
+    net.start()
+
 
     info("*** ホストの追加\n")
     sta1 = net.addStation('sta1',
                           mac='00:00:00:00:00:01',
                           ip='10.0.0.1/8')
-    # sta1 = net.topo.addStation('sta1',
-    #                       mac='00:00:00:00:00:01',
-    #                       ip='10.0.0.1/8',
-    #                       position='50,50,0')
-    # sta2 = net.topo.addStation('sta2',
-    #                       mac='00:00:00:00:00:02',
-    #                       ip='10.0.0.2/8',
-    #                       position='150,50,0')
-
+    sta2 = net.addStation('sta2',
+                          mac='00:00:00:00:00:02',
+                          ip='10.0.0.2/8')
+    # 位置の設定
+    sta1.params['position'] = '10,20,0'
+    sta2.params['position'] = '30,20,0'
+    
     info("*** Ad-hocリンクの作成\n")
     net.addLink(sta1, sta2,
                 cls=adhoc,
